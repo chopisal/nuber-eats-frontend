@@ -1,12 +1,4 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-export default function LoggedOutRouter() {
-  return (
-    <Router>
-      <Switch>
-        <Route path="/create-account"></Route>
-      </Switch>
-    </Router>
-  );
-}
+export const LoggedOutRouter = () => <div>LoggedOutRouter</div>;
