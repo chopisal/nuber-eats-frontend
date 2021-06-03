@@ -1,8 +1,9 @@
 import { gql, useMutation } from "@apollo/client";
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { authTokenVar, isLoggedInVar } from "../apollo";
 import { Button } from "../components/Button";
 import { FormError } from "../components/form-error";
 import { LOCALSTORAGE_TOKEN } from "../constants";
@@ -43,8 +44,8 @@ export const Login = () => {
     } = data;
     if (ok && token) {
       localStorage.setItem(LOCALSTORAGE_TOKEN, token);
-      // authTokenVar(token);
-      // isLoggedInVar(true);
+      authTokenVar(token);
+      isLoggedInVar(true);
     }
   };
 
@@ -66,9 +67,9 @@ export const Login = () => {
 
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
-      {/* <Helmet>
+      <Helmet>
         <title>Login</title>
-      </Helmet> */}
+      </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
         <img src={nuberLogo} className="w-52 mb-10" alt="Nuber Eats" />
         <h4 className="w-full font-medium text-left text-3xl mb-5">
@@ -108,7 +109,7 @@ export const Login = () => {
           {errors.password?.message && (
             <FormError errorMessage={errors.password?.message} />
           )}
-          <Button canClick={isValid} loading={false} actionText={"Log in"} />
+          <Button canClick={isValid} loading={loading} actionText={"Log in"} />
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
           )}
