@@ -5,19 +5,28 @@ import { UserRole } from "../__generated__/globalTypes";
 import { NotFound } from "../pages/404";
 import { Header } from "../components/header";
 import { ConfirmEmail } from "../pages/user/confirm-email";
+import { Restaurants } from "../pages/client/restaurants";
 import { Restaurant } from "../pages/client/restaurant";
 import { EditProfile } from "../pages/user/edit-profile";
 import { MyRestaurants } from "../pages/owner/my-restaurants";
 import { Dashboard } from "../pages/driver/dashboard";
+import { AddRestaurant } from "../pages/owner/add-restaurants";
+import { MyRestaurant } from "../pages/owner/my-restaurant";
+import { AddDish } from "../pages/owner/add-dish";
 
-const clientRoutes = [{ path: "/", component: <Restaurant /> }];
+const clientRoutes = [{ path: "/", component: <Restaurants /> }];
 
 const commonRoutes = [
   { path: "/confirm", component: <ConfirmEmail /> },
   { path: "/edit-profile", component: <EditProfile /> },
 ];
 
-const restaurantRoutes = [{ path: "/", component: <MyRestaurants /> }];
+const restaurantRoutes = [
+  { path: "/", component: <MyRestaurants /> },
+  { path: "/add-restaurant", component: <AddRestaurant /> },
+  { path: "/restaurants/:id", component: <MyRestaurant /> },
+  { path: "/restaurants/:restaurantId/add-dish", component: <AddDish /> },
+];
 
 const driverRoutes = [{ path: "/", component: <Dashboard /> }];
 
