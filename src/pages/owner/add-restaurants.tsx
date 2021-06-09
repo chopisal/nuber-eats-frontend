@@ -9,6 +9,7 @@ import {
   createRestaurant,
   createRestaurantVariables,
 } from "../../__generated__/createRestaurant";
+import { MY_RESTAURANTS_QUERY } from "./my-restaurants";
 
 const CREATE_RESTAURANT_MUTATION = gql`
   mutation createRestaurant($input: CreateRestaurantInput!) {
@@ -32,7 +33,40 @@ export const AddRestaurant = () => {
   const history = useHistory();
   const [imageUrl, setImageUrl] = useState("");
 
-  const onCompleted = (data: createRestaurant) => {};
+  const onCompleted = (data: createRestaurant) => {
+    const {
+      createRestaurant: { ok, restaurantId },
+    } = data;
+    if (ok) {
+      const { name, categoryName, address } = getValues();
+      setUploading(false);
+      const queryResult = client.readQuery({ query: MY_RESTAURANTS_QUERY });
+      client.writeQuery({
+        query: MY_RESTAURANTS_QUERY,
+        data: {
+          myRestaurants: {
+            ...queryResult.myRestaurants,
+            restaurants: [
+              {
+                address,
+                category: {
+                  name: categoryName,
+                  __typename: "Category",
+                },
+                coverImg: imageUrl,
+                id: restaurantId,
+                isPromoted: false,
+                name,
+                __typename: "Restaurant",
+              },
+              ...queryResult.myRestaurants.restaurants,
+            ],
+          },
+        },
+      });
+      history.push("/");
+    }
+  };
 
   const [createRestaurantMutation, { data }] = useMutation<
     createRestaurant,
@@ -56,6 +90,7 @@ export const AddRestaurant = () => {
           body: formBody,
         })
       ).json();
+
       setImageUrl(coverImg);
       createRestaurantMutation({
         variables: {
